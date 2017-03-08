@@ -1,0 +1,262 @@
+---
+# ----------------------------------------------------------------------------
+# Copyright (c) Acroquest Technology Co, Ltd. All Rights Reserved.
+# Please read the associated COPYRIGHTS file for more details.
+# 
+# THE SOFTWARE IS PROVIDED BY Acroquest Technology Co., Ltd.,
+# WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+# BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDER BE LIABLE FOR ANY
+# CLAIM, DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+# OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+# ----------------------------------------------------------------------------
+#
+#========================================================
+# Selenium Code Builder 変換設定ファイル
+# version: 0.5.0
+# memo:
+# * 「after : |2」の指定は、置換先が複数行でインデントが 2 であることを意味します。詳細はyaml仕様を参照ください。
+#
+#========================================================
+#
+#------------------------------------------------------------------------------
+# Import 定義の追加
+#------------------------------------------------------------------------------
+- before : 'public class ([a-zA-Z0-9]+) \{'
+  after : |2
+    import java.io.File;
+    import java.io.IOException;
+    import java.nio.file.Files;
+    import java.nio.file.Path;
+    import java.nio.file.Paths;
+    import org.apache.commons.io.FilenameUtils;
+    import org.openqa.selenium.edge.EdgeDriver;
+    import org.openqa.selenium.ie.InternetExplorerDriver;
+    import org.openqa.selenium.chrome.ChromeDriver;
+    import org.openqa.selenium.safari.SafariDriver;
+    import org.openqa.selenium.remote.DesiredCapabilities;
+    import org.openqa.selenium.remote.RemoteWebDriver;
+    import org.openqa.selenium.remote.Augmenter;
+
+    public class $1 {
+    
+      /** キャプチャファイル名末尾にブラウザ名を追加 */ 
+      private boolean captureFileWithBrowserName = false;
+      /** テスト対象のブラウザ */ 
+      private String browser;
+      /** 画像ファイルの保存ディレクトリ */ 
+      private String captureDirectory;
+    
+#------------------------------------------------------------------------------
+# ドライバ定義の追加
+#------------------------------------------------------------------------------
+- before : '([^\S\x0a\x0d]*)driver = new FirefoxDriver\(\);'
+  after : |2
+    $1//SCB: 以下をコメントイン/コメントアウトしてブラウザを指定します。
+    $1//browser = "ie";
+    $1browser = "edge";
+    $1//browser = "firefox";
+    $1//browser = "edge";
+    $1//browser = "chrome";
+    $1//browser = "safari-mac";
+    
+    $1//browser = "ie64";
+    $1//browser = "firefox64";
+    
+    $1// SCB: propertyでのブラウザ指定があればそちらを優先します。
+    $1String propBrowser = System.getProperty("browser");
+    $1if (propBrowser != null){
+    $1  browser = propBrowser;
+    $1}
+    
+    $1captureDirectory = System.getProperty("capturedirectory");
+    $1if (captureDirectory == null){
+    $1  captureDirectory = ".";
+    $1}
+    
+    $1driver = createWebDriver(browser);    // SCB: WebDriver を作成します。
+    
+    $1captureFileWithBrowserName=true;    // SCB: 画面キャプチャファイル名の末尾にブラウザ名を追記します。
+    
+#------------------------------------------------------------------------------
+# ドライバ設定
+#------------------------------------------------------------------------------
+- before : '    (driver.manage\(\)\.timeouts\(\)\.implicitlyWait\(30, TimeUnit\.SECONDS\);)'
+  after : |2
+        $1
+        driver.manage().window().setPosition(new Point(0,0));
+        driver.manage().window().setSize(new Dimension(1280,800));    // SCB: ブラウザサイズ設定。
+        //driver.manage().window().maximize();    // SCB: ブラウザを最大化する場合。
+#------------------------------------------------------------------------------
+# 未対応コマンド : selectFrame
+#------------------------------------------------------------------------------
+- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectFrame \| relative=top \| \]\]'
+  after : |2
+    $1driver.switchTo().defaultContent();    // SCB: Frameトップに戻る。
+- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectFrame \| ([^=]+?) \| \]\]'
+  after : |2
+    $1driver.switchTo().defaultContent();    // SCB: Experimental. Frameトップに戻ってから、次レベル フレームへの移動を想定。
+    $1driver.switchTo().frame("$2");    // SCB: フレームネストが深い場合は要調整。
+#------------------------------------------------------------------------------
+# 未対応コマンド : selectWindow
+#------------------------------------------------------------------------------
+- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectWindow \| name=(.+?) \| \]\]'
+  after : |2
+    $1driver.switchTo().defaultContent();    // SCB: Experimental. Frame操作時にSelenium IDEで出現し、Export時にUnsupported commandとなった。
+    $1driver.switchTo().frame("$2");    // SCB: フレームネストが深い場合は要調整。
+#------------------------------------------------------------------------------
+# 未対応コマンド : キャプチャ
+#------------------------------------------------------------------------------
+- before : '([^\S\x0a\x0d]*)//.*?\| [a-zA-Z]:[^\x0a\x0d]*[\\/]([a-zA-Z0-9_-].*\.(png|jpg)).*\]'
+  after : |2
+    $1{
+    $1  capture("$2");
+    $1}
+#------------------------------------------------------------------------------
+# 未対応コマンド : Dom locators
+#   Selenium IDE Options > フォーマット > Java/JUnit4/WebDriverにて Show Selenese オンでエクスポートした場合
+#------------------------------------------------------------------------------
+- before : '([^\S\x0a\x0d]*)(// click \| (.+?) \| )\n[^\S\x0a\x0d]*// ERROR: Caught exception \[Error: Dom locators are not implemented yet\!\]'
+  after : |2
+    $1$2
+    $1((WebElement) ((JavascriptExecutor) driver).executeScript("return $3;")).sendKeys(Keys.CONTROL);    // SCB: Experimental. 安定化調整
+    $1Thread.sleep(500);    // SCB: 安定化調整
+    $1((WebElement) ((JavascriptExecutor) driver).executeScript("return $3;")).click();    // SCB: Experimental. 
+#------------------------------------------------------------------------------
+# 未対応コマンド : StoreEval 暫定コメントアウト対応
+#------------------------------------------------------------------------------
+- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[getEval \| //\\-(.+?) \| \]\]'
+  after : |2
+    $1((JavascriptExecutor) driver).executeScript("$2");    // IDE 上での js 定義にて暫定コメントアウト文字列「//\\-」を検出したので、コメントアウトを解除しました。
+#------------------------------------------------------------------------------
+# 未対応コマンド : StoreEval
+#------------------------------------------------------------------------------
+- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[getEval \| (.+?) \| \]\]'
+  after : |2
+    $1((JavascriptExecutor) driver).executeScript("$2");
+#------------------------------------------------------------------------------
+# 安定化調整 : click
+#------------------------------------------------------------------------------
+- before : '([^\S\x0a\x0d]*)(driver.findElement\(.+?\)).click\(\);'
+  after : |2
+    $1$2.sendKeys(Keys.CONTROL);    // SCB: 安定化調整
+    $1Thread.sleep(500);    // SCB: 安定化調整
+    $1$2.click();
+#------------------------------------------------------------------------------
+# 安定化調整 : driver.get
+#------------------------------------------------------------------------------
+- before : '([^\S\x0a\x0d]*)(driver.get\(baseUrl \+ ".*?"\);)'
+  after : |2
+    $1$2
+    $1driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);    // SCB: 安定化調整
+#------------------------------------------------------------------------------
+# ブラウザ終了
+#------------------------------------------------------------------------------
+- before : '    driver.quit\(\);'
+  after : |2
+        //Thread.sleep(1500);    // SCB: 目視確認用
+        driver.quit\(\);
+#------------------------------------------------------------------------------
+# ヘルパー関数定義の追加
+#------------------------------------------------------------------------------
+- before : '(}\s$)'
+  after : |2
+ 
+      /**
+       * 画面キャプチャを指定ファイル名で保存する。
+       *
+       * @param fileName 保存ファイル名
+       */
+       public void capture(String fileName) throws Exception
+      {
+        String newFileName =  fileName;
+        if(captureFileWithBrowserName == true){
+          Capabilities cap = ((RemoteWebDriver) driver).getCapabilities();
+          String browserName = cap.getBrowserName().toLowerCase();
+          newFileName = FilenameUtils.removeExtension(fileName) + '_' + browserName + '.' + FilenameUtils.getExtension(fileName);
+        }
+        capture(driver, Paths.get(captureDirectory), newFileName);
+      }
+
+      public static void capture(WebDriver driver, Path captureDirectory,
+              String fileName) throws Exception
+      {
+
+          WebDriver tempdriver = driver;
+          if (!(driver instanceof TakesScreenshot))
+          {
+              tempdriver = new Augmenter().augment(driver);
+          }
+          Thread.sleep(1000);
+          TakesScreenshot screen = (TakesScreenshot) tempdriver;
+          Path capture = captureDirectory.resolve(fileName);
+          try
+          {
+              Files.write(capture, screen.getScreenshotAs(OutputType.BYTES));
+          }
+          catch (IOException e)
+          {
+              e.printStackTrace();
+          }
+      }
+  
+      /**
+       * 引数に指定された webdriver を作成する。
+       *
+       * @param browserName ブラウザ名
+       * @return WebDriverオブジェクト
+       */
+      public static WebDriver createWebDriver(String browserName){
+        WebDriver driver = null;
+        switch (browserName.trim().toLowerCase())
+        {
+            case "safari-mac":
+              driver = new SafariDriver();
+              break;
+
+            case "chrome":
+              System.setProperty("webdriver.chrome.driver",new File(".").getAbsoluteFile().getParent()
+                  + "\\\\lib\\\\chromedriver.exe");
+              driver = new ChromeDriver();
+              break;
+
+            case "ie":
+              System.setProperty("webdriver.ie.driver",
+                new File(".").getAbsoluteFile().getParent()
+                  + "\\\\lib\\\\IEDriverServer.exe");
+                driver = new InternetExplorerDriver();
+              break;
+
+            case "ie64":
+              System.setProperty("webdriver.ie.driver",
+                new File(".").getAbsoluteFile().getParent()
+                  + "\\\\lib\\\\IEDriverServer64.exe");
+                driver = new InternetExplorerDriver();
+              break;
+
+            case "firefox":
+              System.setProperty("webdriver.gecko.driver",new File(".").getAbsoluteFile().getParent()
+                  + "\\\\lib\\\\geckodriver.exe");
+                driver = new FirefoxDriver();
+              break;
+
+            case "firefox64":
+              System.setProperty("webdriver.gecko.driver",new File(".").getAbsoluteFile().getParent()
+                  + "\\\\lib\\\\geckodriver64.exe");
+                driver = new FirefoxDriver();
+              break;
+
+            case "edge":
+              System.setProperty("webdriver.edge.driver",
+                      new File(".").getAbsoluteFile().getParent()
+                              + "\\\\lib\\\\MicrosoftWebDriver.exe");
+              driver = new EdgeDriver();
+              break;
+
+            default:
+              break;
+        }
+        return driver;
+      }
+    $1
