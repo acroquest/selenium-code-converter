@@ -16,7 +16,7 @@ import java.io.File
 import java.io.FilenameFilter;
 
 /**
- * Javaƒtƒ@ƒCƒ‹‚ÌƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚Ì‚½‚ß‚ÌƒNƒ‰ƒXB
+ * Javaãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã®ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
  *
  */
 class JavaFileFilter implements FilenameFilter {

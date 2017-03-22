@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ƒtƒ@ƒCƒ‹ƒVƒXƒeƒ€ŠÖ˜A‚Ìƒ†[ƒeƒBƒŠƒeƒBƒNƒ‰ƒXB
+ * ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ é–¢é€£ã®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã‚¯ãƒ©ã‚¹ã€‚
  *
  */
 public class FileUtil {
