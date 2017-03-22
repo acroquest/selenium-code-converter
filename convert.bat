@@ -24,12 +24,12 @@ cd %~dp0\src\main\groovy
 echo ------------------------------------------
 echo --- 置換処理を実施します...
 echo ------------------------------------------
-java -cp .;../../../lib\* groovy.ui.GroovyMain SeleniumCodeBuilder.groovy %~dp0/input %~dp0/output %~dp0/setting.yaml
+java -Dfile.encoding=UTF-8 -cp .;../../../lib/* groovy.ui.GroovyMain SeleniumCodeBuilder.groovy %~dp0/input %~dp0/output %~dp0/setting.yaml
 echo.
 echo ------------------------------------------
 echo --- パッケージ階層を設定します...
 echo ------------------------------------------
-java -cp .;../../../lib\* groovy.ui.GroovyMain PackageModifier.groovy %~dp0/output %~dp0/output
+java -Dfile.encoding=UTF-8 -cp .;../../../lib/* groovy.ui.GroovyMain PackageModifier.groovy %~dp0/output %~dp0/output
 
 @rem --- 引数付きで本バッチが起動された場合は、pauseを行いません。
 @if "%1"=="" (
