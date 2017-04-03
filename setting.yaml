@@ -13,18 +13,19 @@
 # ----------------------------------------------------------------------------
 #
 #========================================================
-# Selenium Code Builder •ÏŠ·İ’èƒtƒ@ƒCƒ‹
+# Selenium Code Converter å¤‰æ›è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«
 # version: 0.5.0
 # memo:
-# * uafter : |2v‚Ìw’è‚ÍA’uŠ·æ‚ª•¡”s‚ÅƒCƒ“ƒfƒ“ƒg‚ª 2 ‚Å‚ ‚é‚±‚Æ‚ğˆÓ–¡‚µ‚Ü‚·BÚ×‚Íyamld—l‚ğQÆ‚­‚¾‚³‚¢B
+# * ã€Œafter : |2ã€ã®æŒ‡å®šã¯ã€ç½®æ›å…ˆãŒè¤‡æ•°è¡Œã§ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆãŒ 2 ã§ã‚ã‚‹ã“ã¨ã‚’æ„å‘³ã—ã¾ã™ã€‚è©³ç´°ã¯yamlä»•æ§˜ã‚’å‚ç…§ãã ã•ã„ã€‚
 #
 #========================================================
 #
 #------------------------------------------------------------------------------
-# Import ’è‹`‚Ì’Ç‰Á
+# Import å®šç¾©ã®è¿½åŠ 
 #------------------------------------------------------------------------------
-- before : 'public class ([a-zA-Z0-9]+) \{'
+- before : '\npublic class ([a-zA-Z0-9]+) \{'
   after : |2
+    
     import java.io.File;
     import java.io.IOException;
     import java.nio.file.Files;
@@ -41,140 +42,261 @@
 
     public class $1 {
     
-      /** ƒLƒƒƒvƒ`ƒƒƒtƒ@ƒCƒ‹–¼––”ö‚Éƒuƒ‰ƒEƒU–¼‚ğ’Ç‰Á */ 
-      private boolean captureFileWithBrowserName = false;
-      /** ƒeƒXƒg‘ÎÛ‚Ìƒuƒ‰ƒEƒU */ 
+      /** ãƒ†ã‚¹ãƒˆå¯¾è±¡ã®ãƒ–ãƒ©ã‚¦ã‚¶ */ 
       private String browser;
-      /** ‰æ‘œƒtƒ@ƒCƒ‹‚Ì•Û‘¶ƒfƒBƒŒƒNƒgƒŠ */ 
+      /** ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª */ 
       private String captureDirectory;
-    
+      /** ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«åã«ã‚¯ãƒ©ã‚¹åã‚’è¿½åŠ  */ 
+      private boolean addClassNameToCaptureFile = false;
+      /** ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«åã«é€£ç•ªã‚’è¿½åŠ  */ 
+      private boolean addSeqNoToCaptureFile = false;
+      /** ç”»åƒã‚­ãƒ£ãƒ—ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã®é€£ç•ª */ 
+      private int captureSeqNo = 0;
+      /** ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«åæœ«å°¾ã«ãƒ–ãƒ©ã‚¦ã‚¶åã‚’è¿½åŠ  */ 
+      private boolean captureFileWithBrowserName = false;
+      
 #------------------------------------------------------------------------------
-# ƒhƒ‰ƒCƒo’è‹`‚Ì’Ç‰Á
+# ãƒ‰ãƒ©ã‚¤ãƒå®šç¾©ã®è¿½åŠ 
 #------------------------------------------------------------------------------
-- before : '([^\S\x0a\x0d]*)driver = new FirefoxDriver\(\);'
+- before : '\n([^\S\x0a\x0d]*)driver = new FirefoxDriver\(\);'
   after : |2
-    $1//SCB: ˆÈ‰º‚ğƒRƒƒ“ƒgƒCƒ“/ƒRƒƒ“ƒgƒAƒEƒg‚µ‚Äƒuƒ‰ƒEƒU‚ğw’è‚µ‚Ü‚·B
+    
+    $1//SCC: ä»¥ä¸‹ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¤ãƒ³/ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã—ã¦ãƒ–ãƒ©ã‚¦ã‚¶ã‚’æŒ‡å®šã—ã¾ã™ã€‚
     $1//browser = "ie";
     $1browser = "edge";
     $1//browser = "firefox";
     $1//browser = "edge";
     $1//browser = "chrome";
     $1//browser = "safari-mac";
+    $1//browser = "chrome-mac";
+    $1//browser = "firefox-mac";
     
     $1//browser = "ie64";
     $1//browser = "firefox64";
     
-    $1// SCB: property‚Å‚Ìƒuƒ‰ƒEƒUw’è‚ª‚ ‚ê‚Î‚»‚¿‚ç‚ğ—Dæ‚µ‚Ü‚·B
+    $1// SCC: propertyã§ã®ãƒ–ãƒ©ã‚¦ã‚¶æŒ‡å®šãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’å„ªå…ˆã—ã¾ã™ã€‚
     $1String propBrowser = System.getProperty("browser");
     $1if (propBrowser != null){
     $1  browser = propBrowser;
     $1}
     
-    $1captureDirectory = System.getProperty("capturedirectory");
-    $1if (captureDirectory == null){
+    $1captureDirectory = System.getProperty("capturedirectory");    // SCC: ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜å ´æ‰€ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æŒ‡å®šã‚’å–å¾—ã€‚
+    $1if (captureDirectory == null){    // SCC: æŒ‡å®šãŒãªã„å ´åˆã¯ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒ«ãƒ¼ãƒˆã«ä¿å­˜ã—ã¾ã™ã€‚
     $1  captureDirectory = ".";
     $1}
+
+    $1addClassNameToCaptureFile = true;    // SCC: ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«åã«ã‚¯ãƒ©ã‚¹åã‚’è¿½åŠ ã€‚
+    $1String propClassname2capfile = System.getProperty("classname2capfile");    // SCC: ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æŒ‡å®šãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’å„ªå…ˆã—ã¾ã™ã€‚
+    $1if (propClassname2capfile != null){
+    $1  addClassNameToCaptureFile = Boolean.parseBoolean(propClassname2capfile);
+    $1}
     
-    $1driver = createWebDriver(browser);    // SCB: WebDriver ‚ğì¬‚µ‚Ü‚·B
+    $1addSeqNoToCaptureFile = true;    // SCC: ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«åã«é€£ç•ªã‚’è¿½åŠ ã€‚
+    $1String propSeqno2capfile = System.getProperty("seqno2capfile");    // SCC: ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æŒ‡å®šãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’å„ªå…ˆã—ã¾ã™ã€‚
+    $1if (propSeqno2capfile != null){
+    $1  addSeqNoToCaptureFile = Boolean.parseBoolean(propSeqno2capfile);
+    $1}
     
-    $1captureFileWithBrowserName=true;    // SCB: ‰æ–ÊƒLƒƒƒvƒ`ƒƒƒtƒ@ƒCƒ‹–¼‚Ì––”ö‚Éƒuƒ‰ƒEƒU–¼‚ğ’Ç‹L‚µ‚Ü‚·B
+    $1captureFileWithBrowserName = false;    // SCC: ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«åã®æœ«å°¾ã«ãƒ–ãƒ©ã‚¦ã‚¶åã‚’è¿½åŠ ã—ãªã„ã€‚
+    $1String propBrowsername2capfile = System.getProperty("browsername2capfile");    // SCC: ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£æŒ‡å®šãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’å„ªå…ˆã—ã¾ã™ã€‚
+    $1if (propBrowsername2capfile != null){
+    $1  captureFileWithBrowserName = Boolean.parseBoolean(propBrowsername2capfile);
+    $1}
+    
+    $1driver = createWebDriver(browser);    // SCC: WebDriver ã‚’ä½œæˆã—ã¾ã™ã€‚
     
 #------------------------------------------------------------------------------
-# ƒhƒ‰ƒCƒoİ’è
+# ãƒ‰ãƒ©ã‚¤ãƒè¨­å®š
 #------------------------------------------------------------------------------
-- before : '    (driver.manage\(\)\.timeouts\(\)\.implicitlyWait\(30, TimeUnit\.SECONDS\);)'
+- before : '\n([^\S\x0a\x0d]*)(driver.manage\(\)\.timeouts\(\)\.implicitlyWait\(30, TimeUnit\.SECONDS\);)'
   after : |2
-        $1
-        driver.manage().window().setPosition(new Point(0,0));
-        driver.manage().window().setSize(new Dimension(1280,800));    // SCB: ƒuƒ‰ƒEƒUƒTƒCƒYİ’èB
-        //driver.manage().window().maximize();    // SCB: ƒuƒ‰ƒEƒU‚ğÅ‘å‰»‚·‚éê‡B
+    
+    $1$2
+    $1driver.manage().window().setPosition(new Point(0,0));
+    $1driver.manage().window().setSize(new Dimension(1280,800));    // SCC: ãƒ–ãƒ©ã‚¦ã‚¶ã‚µã‚¤ã‚ºè¨­å®šã€‚
+    $1//driver.manage().window().maximize();    // SCC: ãƒ–ãƒ©ã‚¦ã‚¶ã‚’æœ€å¤§åŒ–ã™ã‚‹å ´åˆã€‚
 #------------------------------------------------------------------------------
-# –¢‘Î‰ƒRƒ}ƒ“ƒh : selectFrame
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : selectFrame relative=top
 #------------------------------------------------------------------------------
-- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectFrame \| relative=top \| \]\]'
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectFrame \| relative=top \| \]\]'
   after : |2
-    $1driver.switchTo().defaultContent();    // SCB: Frameƒgƒbƒv‚É–ß‚éB
-- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectFrame \| ([^=]+?) \| \]\]'
+    
+    $1driver.switchTo().defaultContent();    // SCC: Frameãƒˆãƒƒãƒ—ã«æˆ»ã‚‹ã€‚
+#------------------------------------------------------------------------------
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : selectFrame index=
+#------------------------------------------------------------------------------
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectFrame \| index=(\d+) \| \]\]'
   after : |2
-    $1driver.switchTo().defaultContent();    // SCB: Experimental. Frameƒgƒbƒv‚É–ß‚Á‚Ä‚©‚çAŸƒŒƒxƒ‹ ƒtƒŒ[ƒ€‚Ö‚ÌˆÚ“®‚ğ‘z’èB
-    $1driver.switchTo().frame("$2");    // SCB: ƒtƒŒ[ƒ€ƒlƒXƒg‚ª[‚¢ê‡‚Í—v’²®B
+    
+    $1driver.switchTo().defaultContent();    // SCC: Experimental. Frameãƒˆãƒƒãƒ—ã«æˆ»ã£ã¦ã‹ã‚‰ã€æ¬¡ãƒ¬ãƒ™ãƒ« ãƒ•ãƒ¬ãƒ¼ãƒ ã¸ã®ç§»å‹•ã‚’æƒ³å®šã€‚
+    $1driver.switchTo().frame($2);    // SCC: ãƒ•ãƒ¬ãƒ¼ãƒ ãƒã‚¹ãƒˆãŒæ·±ã„å ´åˆã¯è¦èª¿æ•´ã€‚
 #------------------------------------------------------------------------------
-# –¢‘Î‰ƒRƒ}ƒ“ƒh : selectWindow
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : selectFrame
 #------------------------------------------------------------------------------
-- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectWindow \| name=(.+?) \| \]\]'
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectFrame \| ([^=]+?) \| \]\]'
   after : |2
-    $1driver.switchTo().defaultContent();    // SCB: Experimental. Frame‘€ì‚ÉSelenium IDE‚ÅoŒ»‚µAExport‚ÉUnsupported command‚Æ‚È‚Á‚½B
-    $1driver.switchTo().frame("$2");    // SCB: ƒtƒŒ[ƒ€ƒlƒXƒg‚ª[‚¢ê‡‚Í—v’²®B
+    
+    $1driver.switchTo().defaultContent();    // SCC: Experimental. Frameãƒˆãƒƒãƒ—ã«æˆ»ã£ã¦ã‹ã‚‰ã€æ¬¡ãƒ¬ãƒ™ãƒ« ãƒ•ãƒ¬ãƒ¼ãƒ ã¸ã®ç§»å‹•ã‚’æƒ³å®šã€‚
+    $1driver.switchTo().frame("$2");    // SCC: ãƒ•ãƒ¬ãƒ¼ãƒ ãƒã‚¹ãƒˆãŒæ·±ã„å ´åˆã¯è¦èª¿æ•´ã€‚
 #------------------------------------------------------------------------------
-# –¢‘Î‰ƒRƒ}ƒ“ƒh : ƒLƒƒƒvƒ`ƒƒ
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : selectWindow
 #------------------------------------------------------------------------------
-- before : '([^\S\x0a\x0d]*)//.*?\| [a-zA-Z]:[^\x0a\x0d]*[\\/]([a-zA-Z0-9_-].*\.(png|jpg)).*\]'
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectWindow \| name=(.+?) \| \]\]'
   after : |2
+    
+    $1try{
+    $1  driver.switchTo().window("$2");
+    $1}catch(NoSuchWindowException e){    // SCC: æŒ‡å®šåã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãªã„å ´åˆã¯ãƒ•ãƒ¬ãƒ¼ãƒ ã¨ä»®å®šã€‚
+    $1  driver.switchTo().defaultContent();    // SCC: Experimental. Frameæ“ä½œæ™‚ã«Selenium IDEã«ã¦selectWindowã¨ã—ã¦è¨˜éŒ²ã•ã‚ŒãŸã€‚
+    $1  driver.switchTo().frame("$2");    // SCC: ãƒ•ãƒ¬ãƒ¼ãƒ ãƒã‚¹ãƒˆãŒæ·±ã„å ´åˆã¯è¦èª¿æ•´ã€‚
+    $1}
+#------------------------------------------------------------------------------
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : selectWindow null
+#------------------------------------------------------------------------------
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[selectWindow \| null \| \]\]'
+  after : |2
+    
+    $1driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());    // SCC: Experimental. [0]ã¯å¿…è¦ã«å¿œã˜ã¦èª¿æ•´ã€‚
+#------------------------------------------------------------------------------
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : openWindow ${å¤‰æ•°}
+#------------------------------------------------------------------------------
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[openWindow \| \$\{(.+?)\} \| (.+?)\]\]'
+  after : |2
+    
+    $1((JavascriptExecutor) driver).executeScript("window.open('" + $2 + "','$3')");    // SCC: Experimental.
+#------------------------------------------------------------------------------
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : openWindow http~
+#------------------------------------------------------------------------------
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[openWindow \| (http.+?) \| (.+?)\]\]'
+  after : |2
+    
+    $1((JavascriptExecutor) driver).executeScript("window.open('$2','$3')");    // SCC: Experimental.
+#------------------------------------------------------------------------------
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : openWindow
+#------------------------------------------------------------------------------
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[openWindow \| (.+?) \| (.+?)\]\]'
+  after : |2
+    
+    $1((JavascriptExecutor) driver).executeScript("window.open('" + baseUrl + "$2" + "','$3')");    // SCC: Experimental.
+#------------------------------------------------------------------------------
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : ã‚­ãƒ£ãƒ—ãƒãƒ£
+#------------------------------------------------------------------------------
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[captureEntirePageScreenshot \| [a-zA-Z]:[^\x0a\x0d]*[\\/]([a-zA-Z0-9_-].*\.(png|jpg)).*\]'
+  after : |2
+    
     $1{
     $1  capture("$2");
     $1}
 #------------------------------------------------------------------------------
-# –¢‘Î‰ƒRƒ}ƒ“ƒh : Dom locators
-#   Selenium IDE Options > ƒtƒH[ƒ}ƒbƒg > Java/JUnit4/WebDriver‚É‚Ä Show Selenese ƒIƒ“‚ÅƒGƒNƒXƒ|[ƒg‚µ‚½ê‡
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : Dom locators
+#   Selenium IDE Options > ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ > Java/JUnit4/WebDriverã«ã¦ Show Selenese ã‚ªãƒ³ã§ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã—ãŸå ´åˆ
 #------------------------------------------------------------------------------
-- before : '([^\S\x0a\x0d]*)(// click \| (.+?) \| )\n[^\S\x0a\x0d]*// ERROR: Caught exception \[Error: Dom locators are not implemented yet\!\]'
+- before : '\n([^\S\x0a\x0d]*)(// click \| (.+?) \| )\n[^\S\x0a\x0d]*// ERROR: Caught exception \[Error: Dom locators are not implemented yet\!\]'
   after : |2
+    
     $1$2
-    $1((WebElement) ((JavascriptExecutor) driver).executeScript("return $3;")).sendKeys(Keys.CONTROL);    // SCB: Experimental. ˆÀ’è‰»’²®
-    $1Thread.sleep(500);    // SCB: ˆÀ’è‰»’²®
-    $1((WebElement) ((JavascriptExecutor) driver).executeScript("return $3;")).click();    // SCB: Experimental. 
+    $1Thread.sleep(100);    // SCC: å®‰å®šåŒ–èª¿æ•´
+    $1click(((WebElement) ((JavascriptExecutor) driver).executeScript("return $3;")));
+#    $1Thread.sleep(100);    // SCC: å®‰å®šåŒ–èª¿æ•´
+#    $1((WebElement) ((JavascriptExecutor) driver).executeScript("return $3;")).sendKeys(Keys.CONTROL);    // SCC: Experimental. å®‰å®šåŒ–èª¿æ•´
+#    $1Thread.sleep(500);    // SCC: å®‰å®šåŒ–èª¿æ•´
+#    $1((WebElement) ((JavascriptExecutor) driver).executeScript("return $3;")).click();    // SCC: Experimental. 
 #------------------------------------------------------------------------------
-# –¢‘Î‰ƒRƒ}ƒ“ƒh : StoreEval b’èƒRƒƒ“ƒgƒAƒEƒg‘Î‰
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : StoreEval ãƒšãƒ¼ã‚¸ã‚µã‚¤ã‚ºå¤‰æ›´ç”¨ javascript ã‚³ãƒãƒ³ãƒ‰ã¸ã®ç‰¹åˆ¥å¯¾å¿œ
 #------------------------------------------------------------------------------
-- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[getEval \| //\\-(.+?) \| \]\]'
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[getEval \| javascript\{window\.opener\.resizeTo\((\d+),(\d+)\)\} \| \]\]'
   after : |2
-    $1((JavascriptExecutor) driver).executeScript("$2");    // IDE ã‚Å‚Ì js ’è‹`‚É‚Äb’èƒRƒƒ“ƒgƒAƒEƒg•¶š—ñu//\\-v‚ğŒŸo‚µ‚½‚Ì‚ÅAƒRƒƒ“ƒgƒAƒEƒg‚ğ‰ğœ‚µ‚Ü‚µ‚½B
+    
+    $1driver.manage().window().setSize(new Dimension($2,$3));    // SCC: ãƒšãƒ¼ã‚¸ã‚µã‚¤ã‚ºå¤‰æ›´ç”¨ javascript ã‚³ãƒãƒ³ãƒ‰ã‹ã‚‰ç½®æ›ã€‚
+
 #------------------------------------------------------------------------------
-# –¢‘Î‰ƒRƒ}ƒ“ƒh : StoreEval
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : StoreEval æš«å®šã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆå¯¾å¿œ
 #------------------------------------------------------------------------------
-- before : '([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[getEval \| (.+?) \| \]\]'
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[getEval \| //\\-(.+?) \| \]\]'
   after : |2
+    
+    $1((JavascriptExecutor) driver).executeScript("$2");    // IDE ä¸Šã§ã® js å®šç¾©ã«ã¦æš«å®šã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆæ–‡å­—åˆ—ã€Œ//\\-ã€ã‚’æ¤œå‡ºã—ãŸã®ã§ã€ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã‚’è§£é™¤ã—ã¾ã—ãŸã€‚
+#------------------------------------------------------------------------------
+# æœªå¯¾å¿œã‚³ãƒãƒ³ãƒ‰ : StoreEval
+#------------------------------------------------------------------------------
+- before : '\n([^\S\x0a\x0d]*)// ERROR: Caught exception \[ERROR: Unsupported command \[getEval \| (.+?) \| \]\]'
+  after : |2
+    
     $1((JavascriptExecutor) driver).executeScript("$2");
 #------------------------------------------------------------------------------
-# ˆÀ’è‰»’²® : click
+# å®‰å®šåŒ–èª¿æ•´ : click
 #------------------------------------------------------------------------------
-- before : '([^\S\x0a\x0d]*)(driver.findElement\(.+?\)).click\(\);'
+- before : '\n([^\S\x0a\x0d]*)(driver.findElement\((.+?)\)).click\(\);'
   after : |2
-    $1$2.sendKeys(Keys.CONTROL);    // SCB: ˆÀ’è‰»’²®
-    $1Thread.sleep(500);    // SCB: ˆÀ’è‰»’²®
-    $1$2.click();
+    
+    $1clickElement($3);
+#--- è¦ç´ æ¯ã«å¾®èª¿æ•´ãŒå¿…è¦ãªå ´åˆã¯ã€ä¸Šè¨˜ã‚’ã‚³ãƒ¡ãƒ³ãƒˆåŒ–ã—ã¦ä»¥ä¸‹ã‚’ä½¿ç”¨ã—ã¦ãã ã•ã„ã€‚
+#    $1$2.sendKeys(Keys.CONTROL);    // SCC: å®‰å®šåŒ–èª¿æ•´
+#    $1Thread.sleep(500);    // SCC: å®‰å®šåŒ–èª¿æ•´
+#    $1$2.click();
 #------------------------------------------------------------------------------
-# ˆÀ’è‰»’²® : driver.get
+# å®‰å®šåŒ–èª¿æ•´ : driver.get
 #------------------------------------------------------------------------------
-- before : '([^\S\x0a\x0d]*)(driver.get\(baseUrl \+ ".*?"\);)'
+- before : '\n([^\S\x0a\x0d]*)(driver.get\(baseUrl \+ ".*?"\);)'
   after : |2
+    
     $1$2
-    $1driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);    // SCB: ˆÀ’è‰»’²®
+    $1driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);    // SCC: å®‰å®šåŒ–èª¿æ•´
 #------------------------------------------------------------------------------
-# ƒuƒ‰ƒEƒUI—¹
+# ãƒ–ãƒ©ã‚¦ã‚¶çµ‚äº†
 #------------------------------------------------------------------------------
-- before : '    driver.quit\(\);'
+- before : '\n([^\S\x0a\x0d]*)driver.quit\(\);'
   after : |2
-        //Thread.sleep(1500);    // SCB: –Ú‹Šm”F—p
-        driver.quit\(\);
+    
+    $1driver.quit\(\);
 #------------------------------------------------------------------------------
-# ƒwƒ‹ƒp[ŠÖ”’è‹`‚Ì’Ç‰Á
+# ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°å®šç¾©ã®è¿½åŠ 
 #------------------------------------------------------------------------------
 - before : '(}\s$)'
   after : |2
  
       /**
-       * ‰æ–ÊƒLƒƒƒvƒ`ƒƒ‚ğw’èƒtƒ@ƒCƒ‹–¼‚Å•Û‘¶‚·‚éB
+       * ç”»é¢è¦ç´ ã‚’ã‚¯ãƒªãƒƒã‚¯ã™ã‚‹ã€‚
        *
-       * @param fileName •Û‘¶ƒtƒ@ƒCƒ‹–¼
+       * @param element ç”»é¢è¦ç´ 
        */
-       public void capture(String fileName) throws Exception
+      public void click(WebElement element) throws Exception
+      {
+        element.sendKeys(Keys.CONTROL);    // SCC: å®‰å®šåŒ–èª¿æ•´
+        Thread.sleep(500);    // SCC: å®‰å®šåŒ–èª¿æ•´
+        element.click();
+      }
+
+      /**
+       * ç”»é¢è¦ç´ ã‚’è¦‹ã¤ã‘ã¦ã‚¯ãƒªãƒƒã‚¯ã™ã‚‹ã€‚
+       *
+       * @param locator è¦ç´ ãƒ­ã‚±ãƒ¼ã‚¿
+       */
+      public void clickElement(By locator) throws Exception
+      {
+        click(driver.findElement(locator));
+      }
+
+      /**
+       * ç”»é¢ã‚­ãƒ£ãƒ—ãƒãƒ£ã‚’æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«åã§ä¿å­˜ã™ã‚‹ã€‚
+       *
+       * @param fileName ä¿å­˜ãƒ•ã‚¡ã‚¤ãƒ«å
+       */
+      public void capture(String fileName) throws Exception
       {
         String newFileName =  fileName;
-        if(captureFileWithBrowserName == true){
+        if(captureFileWithBrowserName == true){    // SCC: ãƒ–ãƒ©ã‚¦ã‚¶åã‚’è¿½åŠ ã—ã¾ã™ã€‚
           Capabilities cap = ((RemoteWebDriver) driver).getCapabilities();
           String browserName = cap.getBrowserName().toLowerCase();
           newFileName = FilenameUtils.removeExtension(fileName) + '_' + browserName + '.' + FilenameUtils.getExtension(fileName);
+        }
+        if(addSeqNoToCaptureFile == true){    // SCC: é€£ç•ªã‚’è¿½åŠ ã—ã¾ã™ã€‚
+          captureSeqNo += 1;
+          newFileName = String.format("%03d", captureSeqNo) + '_' + newFileName;
+        }
+        if(addClassNameToCaptureFile == true){    // SCC: ã‚¯ãƒ©ã‚¹åã‚’è¿½åŠ ã—ã¾ã™ã€‚
+          String classNm = this.getClass().getSimpleName();
+          newFileName = classNm + '_' + newFileName;
         }
         capture(driver, Paths.get(captureDirectory), newFileName);
       }
@@ -202,10 +324,10 @@
       }
   
       /**
-       * ˆø”‚Éw’è‚³‚ê‚½ webdriver ‚ğì¬‚·‚éB
+       * å¼•æ•°ã«æŒ‡å®šã•ã‚ŒãŸ webdriver ã‚’ä½œæˆã™ã‚‹ã€‚
        *
-       * @param browserName ƒuƒ‰ƒEƒU–¼
-       * @return WebDriverƒIƒuƒWƒFƒNƒg
+       * @param browserName ãƒ–ãƒ©ã‚¦ã‚¶å
+       * @return WebDriverã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
        */
       public static WebDriver createWebDriver(String browserName){
         WebDriver driver = null;
@@ -218,6 +340,12 @@
             case "chrome":
               System.setProperty("webdriver.chrome.driver",new File(".").getAbsoluteFile().getParent()
                   + "\\\\lib\\\\chromedriver.exe");
+              driver = new ChromeDriver();
+              break;
+
+            case "chrome-mac":
+              System.setProperty("webdriver.chrome.driver",new File(".").getAbsoluteFile().getParent()
+                  + "/lib/chromedriver_mac64");
               driver = new ChromeDriver();
               break;
 
@@ -238,6 +366,12 @@
             case "firefox":
               System.setProperty("webdriver.gecko.driver",new File(".").getAbsoluteFile().getParent()
                   + "\\\\lib\\\\geckodriver.exe");
+                driver = new FirefoxDriver();
+              break;
+
+            case "firefox-mac":
+              System.setProperty("webdriver.gecko.driver",new File(".").getAbsoluteFile().getParent()
+                  + "/lib/geckodriver_macos");
                 driver = new FirefoxDriver();
               break;
 

@@ -12,64 +12,64 @@
  */
 
 import org.yaml.snakeyaml.Yaml
-// ˆø”‚Ì‰ğÍ‚ğÀ{‚µAÀs•s‰Â”\‚Èˆø”‚Å‚ ‚ê‚ÎÀs‚ğ’†’f‚·‚éB
+// å¼•æ•°ã®è§£æã‚’å®Ÿæ–½ã—ã€å®Ÿè¡Œä¸å¯èƒ½ãªå¼•æ•°ã§ã‚ã‚Œã°å®Ÿè¡Œã‚’ä¸­æ–­ã™ã‚‹ã€‚
 boolean isExecute = checkArgs(args);
 if (!isExecute) {
-    println "ˆ—‚ğI—¹‚µ‚Ü‚·B";
+    println "å‡¦ç†ã‚’çµ‚äº†ã—ã¾ã™ã€‚";
     return;
 }
 
 /**
- * ˆø”ƒ`ƒFƒbƒN‚ğs‚¤B
+ * å¼•æ•°ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†ã€‚
  *
  */
 def checkArgs(String[] values) {
-    String commandLineMessage = "g—p–@: groovy -e targetPath(file or directory) outputPath(directory) settingPath";
-    // ˆê‚Â‚à‚È‚¯‚ê‚ÎNG
+    String commandLineMessage = "å¿…è¦ãªå¼•æ•°: targetPath(file or directory) outputPath(directory) settingPath";
+    // ä¸€ã¤ã‚‚ãªã‘ã‚Œã°NG
     if (values.size() <= 2) {
-        println "ˆø”‚ª‘«‚è‚Ü‚¹‚ñB";
+        println "å¼•æ•°ãŒè¶³ã‚Šã¾ã›ã‚“ã€‚";
         println commandLineMessage;
         return false;
     }
 
-    // ‘æˆêˆø”‚Ìƒtƒ@ƒCƒ‹‚à‚µ‚­‚ÍƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©Šm”F‚·‚éB
+    // ç¬¬ä¸€å¼•æ•°ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚‚ã—ãã¯ãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚‹ã‹ç¢ºèªã™ã‚‹ã€‚
     String inputPath = values[0];
     File file = new File(inputPath);
     if(file.exists() == false) {
-        println "•ÏŠ·æ‚ÌƒpƒX‚Éƒtƒ@ƒCƒ‹‚à‚µ‚­‚ÍƒtƒHƒ‹ƒ_‚ª‚ ‚è‚Ü‚¹‚ñBpath=" + file.getAbsolutePath();
+        println "å¤‰æ›å…ˆã®ãƒ‘ã‚¹ã«ãƒ•ã‚¡ã‚¤ãƒ«ã‚‚ã—ãã¯ãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚Šã¾ã›ã‚“ã€‚path=" + file.getAbsolutePath();
         println commandLineMessage;
         return false;
     }
 
-    // o—Íƒtƒ@ƒCƒ‹æ‚É‚·‚Å‚Éƒtƒ@ƒCƒ‹‚ª‚ ‚éê‡‚Íˆ—‚ğ’†’f‚·‚éB
+    // å‡ºåŠ›ãƒ•ã‚¡ã‚¤ãƒ«å…ˆã«ã™ã§ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯å‡¦ç†ã‚’ä¸­æ–­ã™ã‚‹ã€‚
     File outputFolder = new File(values[1]);
     if (outputFolder.exists()) {
         if (!outputFolder.isDirectory()) {
-            println "o—Íæ‚ªƒtƒHƒ‹ƒ_‚Å‚Í‚ ‚è‚Ü‚¹‚ñBpath=" + outputFolder.getAbsolutePath();
+            println "å‡ºåŠ›å…ˆãŒãƒ•ã‚©ãƒ«ãƒ€ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚path=" + outputFolder.getAbsolutePath();
             println commandLineMessage;
             return false;
         }
     }
 
-    // ’uŠ·İ’èƒtƒ@ƒCƒ‹‚ª‚ ‚é‚©Šm”F‚·‚éB
+    // ç½®æ›è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹ã‹ç¢ºèªã™ã‚‹ã€‚
     File settingYamlPath = new File(values[2]);
     if (!settingYamlPath.exists()) {
-        println "İ’èƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñB path=" + settingYamlPath.getAbsolutePath();
+        println "è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚ path=" + settingYamlPath.getAbsolutePath();
         println commandLineMessage;
         return false;
     }
 
-    // java ƒtƒ@ƒCƒ‹‚ª‚ ‚é‚©ƒ`ƒFƒbƒN‚·‚éB
+    // java ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
     if (file.isDirectory()) {
         File[] javaFiles = FileUtil.getFileWithSubFolder(file, new JavaFileFilter());
         if (javaFiles == null || javaFiles.length == 0) {
-            println "•ÏŠ·‘ÎÛ‚Ìjavaƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚¹‚ñB";
+            println "å¤‰æ›å¯¾è±¡ã®javaãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Šã¾ã›ã‚“ã€‚";
             println commandLineMessage;
             return false;
         }
     } else {
         if (!file.name.endsWith(".java")) {
-            println "•ÏŠ·‘ÎÛ‚Ìƒtƒ@ƒCƒ‹‚Íjavaƒtƒ@ƒCƒ‹‚Å‚Í‚ ‚è‚Ü‚¹‚ñB";
+            println "å¤‰æ›å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯javaãƒ•ã‚¡ã‚¤ãƒ«ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚";
             println commandLineMessage;
             return false;
         }
@@ -77,7 +77,7 @@ def checkArgs(String[] values) {
     return true;
 }
 
-// •ÏŠ·æ‚Ìƒtƒ@ƒCƒ‹‚ğw’è‚·‚éB
+// å¤‰æ›å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹ã€‚
 File target = new File(args[0]);
 File[] targets;
 if (target.isDirectory()) {
@@ -88,18 +88,20 @@ if (target.isDirectory()) {
 
 File settingYamlFile = new File(args[2]);
 
-// o—Íæ‚ÌƒtƒHƒ‹ƒ_‚ğì¬‚·‚éB
+// å‡ºåŠ›å…ˆã®ãƒ•ã‚©ãƒ«ãƒ€ã‚’ä½œæˆã™ã‚‹ã€‚
 File output = new File(args[1]);
 output.mkdirs();
 for (File targetFile : targets) {
     permutation(targetFile, output, settingYamlFile, target);
 }
-println "ˆ—‚ğI—¹‚µ‚Ü‚·B";
+println "å‡¦ç†ã‚’çµ‚äº†ã—ã¾ã™ã€‚";
 
 /**
- * ‘ÎÛ‚Ìƒtƒ@ƒCƒ‹‚ğ’uŠ·‚µAo—ÍƒtƒHƒ‹ƒ_‚Éo—Í‚·‚éB
- * @param file ’uŠ·ƒtƒ@ƒCƒ‹
- * @param outputPath o—Íæƒtƒ@ƒCƒ‹ƒpƒX
+ * å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç½®æ›ã—ã€å‡ºåŠ›ãƒ•ã‚©ãƒ«ãƒ€ã«å‡ºåŠ›ã™ã‚‹ã€‚
+ * @param targetPath ç½®æ›å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«
+ * @param outputPath å‡ºåŠ›å…ˆãƒ•ã‚©ãƒ«ãƒ€ãƒ‘ã‚¹
+ * @param settingPath ç½®æ›è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+ * @param rootFolder ç½®æ›å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«ã¾ãŸã¯ãƒ•ã‚©ãƒ«ãƒ€ãƒ«ãƒ¼ãƒˆ
  */
 def permutation(File targetPath, File outputPath, File settingPath, File rootFolder) {
     StringBuilder fileRead = new StringBuilder();
@@ -118,12 +120,12 @@ def permutation(File targetPath, File outputPath, File settingPath, File rootFol
         System.out.println( ex );
     }
 
-    // İ’èƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İA’uŠ·‚ğÀ{‚·‚éB
-    InputStreamReader reader = new InputStreamReader(new FileInputStream(settingPath));
+    // è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã€ç½®æ›ã‚’å®Ÿæ–½ã™ã‚‹ã€‚ 20170317 - è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’utf8ã«å¤‰æ›´ã€‚
+    InputStreamReader reader = new InputStreamReader(new FileInputStream(settingPath), "UTF-8");
     Yaml yaml = new Yaml();
     Object object = yaml.load(reader);
     if (!(object instanceof List)) {
-        println "İ’èƒtƒ@ƒCƒ‹‚Ì‘®‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B";
+        println "è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸å¼ãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚";
         return;
     }
     String output = fileRead.toString();
@@ -141,7 +143,7 @@ def permutation(File targetPath, File outputPath, File settingPath, File rootFol
         output = output.replaceAll(before, after);
     }
 
-    // •Û‘¶‚·‚éB
+    // ä¿å­˜ã™ã‚‹ã€‚
     try {
         String rootPath = rootFolder.getAbsolutePath();
         String targetFilePath = targetPath.getAbsolutePath();
@@ -156,12 +158,15 @@ def permutation(File targetPath, File outputPath, File settingPath, File rootFol
             String fileName = targetFilePath.substring(rootPath.length() + 1);
             outputFile = new File(outputPath, fileName);
         }
+        // 20170317 - ãƒ•ã‚¡ã‚¤ãƒ«åã®å…ˆé ­æ–‡å­—ã‚’å¤§æ–‡å­—ã«ã‚’å°æ–‡å­—ã«æ›¸ãæ›ãˆ
+        String s = outputFile.getName()
+        outputFile = new File(outputFile.getParent(), Character.toUpperCase(s.charAt(0)).toString() + s.substring(1));
 
         if (outputFile.exists()) {
-            println "o—Íæ‚É‚·‚Å‚Éƒtƒ@ƒCƒ‹‚ª‚ ‚é‚½‚ßAã‘‚«‚µ‚Ü‚·B";
+            println "å‡ºåŠ›å…ˆã«ã™ã§ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹ãŸã‚ã€ä¸Šæ›¸ãã—ã¾ã™ã€‚";
             boolean isDelete = outputFile.delete();
             if (!isDelete) {
-                println "ã‘‚«‚Å‚«‚Ü‚¹‚ñB•Û‘¶‚ğƒXƒLƒbƒv‚µ‚Ü‚·Bpath:" + outputFile.absolutePath;
+                println "ä¸Šæ›¸ãã§ãã¾ã›ã‚“ã€‚ä¿å­˜ã‚’ã‚¹ã‚­ãƒƒãƒ—ã—ã¾ã™ã€‚path:" + outputFile.absolutePath;
                 return;
             }
         }
@@ -170,7 +175,7 @@ def permutation(File targetPath, File outputPath, File settingPath, File rootFol
         OutputStreamWriter filewriter = new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8");
         filewriter.write(output);
         filewriter.close();
-        println "’uŠ·Œã‚Ìƒtƒ@ƒCƒ‹‚ğ•Û‘¶‚µ‚Ü‚µ‚½B path:" + outputFile.absolutePath;
+        println "ç½®æ›å¾Œã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜ã—ã¾ã—ãŸã€‚ path:" + outputFile.absolutePath;
     } catch ( IOException ex ) {
         ex.printStackTrace();
     }

@@ -12,7 +12,7 @@
  */
 
 /**
- * ‰üsƒR[ƒh‚ğ¶¬‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB
+ * æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’ç”Ÿæˆã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
  *
  */
 class SeparatorBuilder {
@@ -24,11 +24,11 @@ class SeparatorBuilder {
     /** line feed code(0x0A(10)). */
     private static final char LF = '\n';
 
-    /** ‰üs‚Ìí—Ş‚ğ•Û‚·‚éB */
+    /** æ”¹è¡Œã®ç¨®é¡ã‚’ä¿æŒã™ã‚‹ã€‚ */
     private Separator separator = null;
 
     /**
-     * ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+     * ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
      */
     public SeparatorBuilder() {
     }
@@ -56,8 +56,8 @@ class SeparatorBuilder {
     }
 
     /**
-     * ‰üsƒR[ƒh‚ğæ“¾‚·‚éB
-     * @return ‰üsƒR[ƒh
+     * æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å–å¾—ã™ã‚‹ã€‚
+     * @return æ”¹è¡Œã‚³ãƒ¼ãƒ‰
      */
     public String getSeparatorCode () {
         if (this.separator == Separator.CR_LF) {

@@ -13,32 +13,32 @@
 
 @echo off
 @rem ============================================================================
-@rem seleniumCodeBuilder ‚É‚æ‚é•ÏŠ·ˆ—‚ğÀs‚µ‚Ü‚·B
+@rem seleniumCodeBuilder ã«ã‚ˆã‚‹å¤‰æ›å‡¦ç†ã‚’å®Ÿè¡Œã—ã¾ã™ã€‚
 @rem ============================================================================
 
-@rem --- ŠÂ‹«•Ï”‚âƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠ‚ğƒ[ƒJƒ‹‰»‚µ‚Ü‚·B
+@rem --- ç’°å¢ƒå¤‰æ•°ã‚„ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ãƒ­ãƒ¼ã‚«ãƒ«åŒ–ã—ã¾ã™ã€‚
 setlocal
 
-rem --- groovy ƒXƒNƒŠƒvƒg‚ÌŠi”[ƒfƒBƒŒƒNƒgƒŠ‚É•ÏX‚µ‚Ü‚·B
+rem --- groovy ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®æ ¼ç´ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«å¤‰æ›´ã—ã¾ã™ã€‚
 cd %~dp0\src\main\groovy
 echo ------------------------------------------
-echo --- ’uŠ·ˆ—‚ğÀ{‚µ‚Ü‚·...
+echo --- ç½®æ›å‡¦ç†ã‚’å®Ÿæ–½ã—ã¾ã™...
 echo ------------------------------------------
-java -cp .;../../../lib\* groovy.ui.GroovyMain SeleniumCodeBuilder.groovy %~dp0/input %~dp0/output %~dp0/setting.yaml
+java -Dfile.encoding=UTF-8 -cp .;../../../lib/* groovy.ui.GroovyMain SeleniumCodeBuilder.groovy %~dp0/input %~dp0/output %~dp0/setting.yaml
 echo.
 echo ------------------------------------------
-echo --- ƒpƒbƒP[ƒWŠK‘w‚ğİ’è‚µ‚Ü‚·...
+echo --- ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸éšå±¤ã‚’è¨­å®šã—ã¾ã™...
 echo ------------------------------------------
-java -cp .;../../../lib\* groovy.ui.GroovyMain PackageModifier.groovy %~dp0/output %~dp0/output
+java -Dfile.encoding=UTF-8 -cp .;../../../lib/* groovy.ui.GroovyMain PackageModifier.groovy %~dp0/output %~dp0/output
 
-@rem --- ˆø”•t‚«‚Å–{ƒoƒbƒ`‚ª‹N“®‚³‚ê‚½ê‡‚ÍApause‚ğs‚¢‚Ü‚¹‚ñB
+@rem --- å¼•æ•°ä»˜ãã§æœ¬ãƒãƒƒãƒãŒèµ·å‹•ã•ã‚ŒãŸå ´åˆã¯ã€pauseã‚’è¡Œã„ã¾ã›ã‚“ã€‚
 @if "%1"=="" (
 pause
 )
 
-@rem --- ŠÂ‹«•Ï”“™‚Ìƒ[ƒJƒ‹‰»‚ğI—¹‚µ‚Ü‚·B
+@rem --- ç’°å¢ƒå¤‰æ•°ç­‰ã®ãƒ­ãƒ¼ã‚«ãƒ«åŒ–ã‚’çµ‚äº†ã—ã¾ã™ã€‚
 endlocal 
 
-@rem --- ³íI—¹‚µ‚Ü‚·B
+@rem --- æ­£å¸¸çµ‚äº†ã—ã¾ã™ã€‚
 exit /b 0
 

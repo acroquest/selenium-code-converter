@@ -13,56 +13,56 @@
 
 import java.io.File;
 
-// ‘ÎÛ‚Ìƒtƒ@ƒCƒ‹‚ÉRootƒtƒHƒ‹ƒ_‚©‚ç‚ÌƒpƒbƒP[ƒW‚ğ’Ç‰Á‚·‚éB
+// å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«Rootãƒ•ã‚©ãƒ«ãƒ€ã‹ã‚‰ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’è¿½åŠ ã™ã‚‹ã€‚
 boolean isExecute = checkArgs(args);
 if (!isExecute) {
-    println "ˆ—‚ğI—¹‚µ‚Ü‚·B";
+    println "å‡¦ç†ã‚’çµ‚äº†ã—ã¾ã™ã€‚";
     return;
 }
 
 /**
- * ˆø”ƒ`ƒFƒbƒN‚ğs‚¤B
+ * å¼•æ•°ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†ã€‚
  *
  */
 def checkArgs(String[] values) {
-    String commandLineMessage = "g—p–@: groovy -e targetPath(file or directory) outputPath(directory) settingPath";
-    // ˆê‚Â‚à‚È‚¯‚ê‚ÎNG
+    String commandLineMessage = "å¿…è¦ãªå¼•æ•°: targetPath(file or directory) outputPath(directory)";
+    // ä¸€ã¤ã‚‚ãªã‘ã‚Œã°NG
     if (values.size() <= 1) {
-        println "ˆø”‚ª‘«‚è‚Ü‚¹‚ñB";
+        println "å¼•æ•°ãŒè¶³ã‚Šã¾ã›ã‚“ã€‚";
         println commandLineMessage;
         return false;
     }
 
-    // ‘æˆêˆø”‚Ìƒtƒ@ƒCƒ‹‚à‚µ‚­‚ÍƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©Šm”F‚·‚éB
+    // ç¬¬ä¸€å¼•æ•°ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚‚ã—ãã¯ãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚‹ã‹ç¢ºèªã™ã‚‹ã€‚
     String inputPath = values[0];
     File file = new File(inputPath);
     if(file.exists() == false) {
-        println "•ÏŠ·æ‚ÌƒpƒX‚Éƒtƒ@ƒCƒ‹‚à‚µ‚­‚ÍƒtƒHƒ‹ƒ_‚ª‚ ‚è‚Ü‚¹‚ñBpath=" + file.getAbsolutePath();
+        println "å¤‰æ›å…ˆã®ãƒ‘ã‚¹ã«ãƒ•ã‚¡ã‚¤ãƒ«ã‚‚ã—ãã¯ãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚Šã¾ã›ã‚“ã€‚path=" + file.getAbsolutePath();
         println commandLineMessage;
         return false;
     }
 
-    // o—Íƒtƒ@ƒCƒ‹æ‚É‚·‚Å‚Éƒtƒ@ƒCƒ‹‚ª‚ ‚éê‡‚Íˆ—‚ğ’†’f‚·‚éB
+    // å‡ºåŠ›ãƒ•ã‚¡ã‚¤ãƒ«å…ˆã«ã™ã§ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯å‡¦ç†ã‚’ä¸­æ–­ã™ã‚‹ã€‚
     File outputFolder = new File(values[1]);
     if (outputFolder.exists()) {
         if (!outputFolder.isDirectory()) {
-            println "o—Íæ‚ªƒtƒHƒ‹ƒ_‚Å‚Í‚ ‚è‚Ü‚¹‚ñBpath=" + outputFolder.getAbsolutePath();
+            println "å‡ºåŠ›å…ˆãŒãƒ•ã‚©ãƒ«ãƒ€ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚path=" + outputFolder.getAbsolutePath();
             println commandLineMessage;
             return false;
         }
     }
 
-    // java ƒtƒ@ƒCƒ‹‚ª‚ ‚é‚©ƒ`ƒFƒbƒN‚·‚éB
+    // java ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
     if (file.isDirectory()) {
         File[] javaFiles = FileUtil.getFileWithSubFolder(file, new JavaFileFilter());
         if (javaFiles == null || javaFiles.length == 0) {
-            println "•ÏŠ·‘ÎÛ‚Ìjavaƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚¹‚ñB";
+            println "å¤‰æ›å¯¾è±¡ã®javaãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Šã¾ã›ã‚“ã€‚";
             println commandLineMessage;
             return false;
         }
     } else {
         if (!file.name.endsWith(".java")) {
-            println "•ÏŠ·‘ÎÛ‚Ìƒtƒ@ƒCƒ‹‚Íjavaƒtƒ@ƒCƒ‹‚Å‚Í‚ ‚è‚Ü‚¹‚ñB";
+            println "å¤‰æ›å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯javaãƒ•ã‚¡ã‚¤ãƒ«ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚";
             println commandLineMessage;
             return false;
         }
@@ -70,7 +70,7 @@ def checkArgs(String[] values) {
     return true;
 }
 
-// •ÏŠ·æ‚Ìƒtƒ@ƒCƒ‹‚ğw’è‚·‚éB
+// å¤‰æ›å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹ã€‚
 File target = new File(args[0]);
 File[] targets;
 if (target.isDirectory()) {
@@ -79,19 +79,20 @@ if (target.isDirectory()) {
     targets = [target] as File[];
 }
 
-// o—Íæ‚ÌƒtƒHƒ‹ƒ_‚ğì¬‚·‚éB
+// å‡ºåŠ›å…ˆã®ãƒ•ã‚©ãƒ«ãƒ€ã‚’ä½œæˆã™ã‚‹ã€‚
 File output = new File(args[1]);
 output.mkdirs();
 for (File targetFile : targets) {
     permutation(targetFile, output, target);
 }
-println "ˆ—‚ğI—¹‚µ‚Ü‚·B";
+println "å‡¦ç†ã‚’çµ‚äº†ã—ã¾ã™ã€‚";
 
 
 /**
- * ‘ÎÛ‚Ìƒtƒ@ƒCƒ‹‚ğ’uŠ·‚µAo—ÍƒtƒHƒ‹ƒ_‚Éo—Í‚·‚éB
- * @param file ’uŠ·ƒtƒ@ƒCƒ‹
- * @param outputPath o—Íæƒtƒ@ƒCƒ‹ƒpƒX
+ * å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸æŒ‡å®šã‚’ãƒ•ã‚©ãƒ«ãƒ€æ§‹æˆã«æº–ã˜ã¦ç½®æ›ã—ã€å‡ºåŠ›ãƒ•ã‚©ãƒ«ãƒ€ã«å‡ºåŠ›ã™ã‚‹ã€‚
+ * @param targetPath ç½®æ›å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«
+ * @param outputPath å‡ºåŠ›å…ˆãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+ * @param rootFolder ç½®æ›å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«ã¾ãŸã¯ãƒ•ã‚©ãƒ«ãƒ€ãƒ«ãƒ¼ãƒˆ
  */
 def permutation(File targetPath, File outputPath, File rootFolder) {
     StringBuilder fileRead = new StringBuilder();
@@ -110,12 +111,13 @@ def permutation(File targetPath, File outputPath, File rootFolder) {
         System.out.println( ex );
     }
 
-    // o—Íæ‚ÌƒpƒX‚ğæ“¾‚·‚é
+    // å‡ºåŠ›å…ˆã®ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹
     String rootPath = rootFolder.getAbsolutePath();
     String targetFilePath = targetPath.getAbsolutePath();
     File outputFile;
     String packageName = "";
-    if (targetPath.absolutePath.equals(rootFolder.absolutePath))
+    if (targetPath.absolutePath.equals(rootFolder.absolutePath)
+        || targetPath.getParent().equals(rootFolder.absolutePath))    // 20170317 - ãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒ•ã‚©ãƒ«ãƒ€ãƒ«ãƒ¼ãƒˆã«ç½®ã‹ã‚ŒãŸå ´åˆ
     {
         String fileName = targetPath.getName();
         outputFile = new File(outputPath, fileName);
@@ -129,7 +131,7 @@ def permutation(File targetPath, File outputPath, File rootFolder) {
     }
 
 
-    // İ’èƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İA’uŠ·‚ğÀ{‚·‚éB
+    // è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã€ç½®æ›ã‚’å®Ÿæ–½ã™ã‚‹ã€‚
     String output = fileRead.toString();
     String before = "package com\\.example\\.tests;";
     String after = "";
@@ -139,14 +141,14 @@ def permutation(File targetPath, File outputPath, File rootFolder) {
     }
     output = output.replaceAll(before, after);
 
-    // •Û‘¶‚·‚éB
+    // ä¿å­˜ã™ã‚‹ã€‚
     try {
 
         if (outputFile.exists()) {
-            println "o—Íæ‚É‚·‚Å‚Éƒtƒ@ƒCƒ‹‚ª‚ ‚é‚½‚ßAã‘‚«‚µ‚Ü‚·B";
+            println "å‡ºåŠ›å…ˆã«ã™ã§ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹ãŸã‚ã€ä¸Šæ›¸ãã—ã¾ã™ã€‚";
             boolean isDelete = outputFile.delete();
             if (!isDelete) {
-                println "ã‘‚«‚Å‚«‚Ü‚¹‚ñB•Û‘¶‚ğƒXƒLƒbƒv‚µ‚Ü‚·Bpath:" + outputFile.absolutePath;
+                println "ä¸Šæ›¸ãã§ãã¾ã›ã‚“ã€‚ä¿å­˜ã‚’ã‚¹ã‚­ãƒƒãƒ—ã—ã¾ã™ã€‚path:" + outputFile.absolutePath;
                 return;
             }
         }
@@ -155,7 +157,7 @@ def permutation(File targetPath, File outputPath, File rootFolder) {
         OutputStreamWriter filewriter = new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8");
         filewriter.write(output);
         filewriter.close();
-        println "’uŠ·Œã‚Ìƒtƒ@ƒCƒ‹‚ğ•Û‘¶‚µ‚Ü‚µ‚½B path:" + outputFile.absolutePath;
+        println "ç½®æ›å¾Œã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜ã—ã¾ã—ãŸã€‚ path:" + outputFile.absolutePath;
     } catch ( IOException ex ) {
         ex.printStackTrace();
     }
